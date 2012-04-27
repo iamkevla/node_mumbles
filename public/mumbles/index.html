@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Mumbles</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1"> 
+
+		<link REL="SHORTCUT ICON" HREF="images/bubble.png">
+		<link REL="apple-touch-icon" HREF="images/bubble.png">		
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
+				
+
+		<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+		<script src="https://github.com/janl/mustache.js/raw/master/mustache.js"></script>
+		<script src="javascripts/mumble.js" ></script> 
+		<script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+
+	
+	</head>
+	<body>
+	<!-- main page which contains mumble stream -->
+	<div data-role="page" data-theme="b" id="viewMumbles" data-title="View Mumbles" >
+		<div data-role="header" data-position="fixed" data-nobackbtn="true"  >
+			<a href="#phonelist" data-transition="flip" data-role="button" data-theme="b" data-icon="grid" >M2 #</a>
+			<h1>Mumbles</h1>
+			<a href="#compose" data-transition="slidedown" data-role="button" data-icon="plus" data-theme="b" >Add</a>
+		</div> <!-- /header -->
+
+			<script id="mumblesTpl" type="text/template">
+				<ul data-role="listview" data-theme="b" data-dividertheme="b" >
+					<li data-role="list-divider" >stream</li>
+					{{#DATA}}
+					<li role="option" data-theme="b" >
+						<img src="./{{3}}"/>
+						<div class="ui-btn-text" >
+							<a href="#view?mumbleID={{0}}" rel="external" >
+							<p class="ui-li-aside" >{{4}}</p>
+							<h5>@{{2}}</h5>
+							<p><strong>{{5}}</strong></p>
+							<p style="white-space:pre-wrap;"  >{{1}}</p>
+							</a>
+						</div>
+					</li>
+					{{/DATA}}
+				</ul>
+			</script>
+		<div data-role="content" id="content" ></div> 
+		<div data-role="footer" data-position="fixed" align="center" >
+			<div data-role="controlgroup" data-type="horizontal" class="ui-bar" >
+				<a href="/mumbles/" data-transition="slideup" data-role="button" data-theme="b" >Stream</a>
+				<a href="/mumbles/#viewProfile" data-transition="slideup"  data-role="button" data-theme="b" >Profile</a>		
+				<a href="/mumbles/#searchUsers" data-transition="slideup" data-role="button" data-theme="b" >Follow</a>
+				<a href="/mumbles/#loginUser" data-transition="pop"  data-role="button" data-theme="b" data-rel="dialog" >Bye</a>
+			</div>	
+		</div><!-- /footer -->	
+	</div> <!-- /page -->
+	
+	<!-- page used to add new mumbles -->
+	<div data-role="page" data-theme="b" id="compose" class="ui-body-b" >
+		<div data-role="header" data-position="fixed" >
+			<h1>Compose</h1>
+		</div> <!-- /header -->
+		<div data-role="content" >
+			<form>
+				<div data-role="fieldcontain">
+					<label for-"Category" >Category</label>
+					<select id="category" >
+						<option selected value="General" >General</option>
+						<option value="Release" >Release</option>
+						<option value="Check-in">Check-In</option>
+					</select>
+				</div>
+				<div data-role="fieldcontain">
+					<textarea id="txtmumble" cols="30" rows="22" ></textarea>
+				</div>
+				
+				<button id="composeSubmit" type="submit" data-theme="b"  >mumble</button>
+					
+				 <div>
+        			LAT:<input type="text" id="lat_field" READONLY />
+        			LONG:<input type="text" id="long_field" READONLY />
+      			</div>
+			</form>
+		</div>
+		<div data-role="footer" data-position="fixed" align="center" >
+			<div data-role="controlgroup" data-type="horizontal" class="ui-bar" >
+				<a href="/mumbles/" data-transition="slideup" data-role="button" data-theme="b" >Stream</a>
+				<a href="/mumbles/#viewProfile" data-transition="slideup"  data-role="button" data-theme="b" >Profile</a>		
+				<a href="/mumbles/#searchUsers" data-transition="slideup" data-role="button" data-theme="b" >Follow</a>
+				<a href="/mumbles/#loginUser" data-transition="pop"  data-role="button" data-theme="b" data-rel="dialog" >Bye</a>
+			</div>	
+		</div><!-- /footer -->	
+	</div> <!-- /page -->
+		
+	<!-- this page provides a directory of numbers -->	
+	<div data-role="page" data-theme="b" id="phonelist" data-add-back-btn="true"   >
+		<div data-role="header" data-position="fixed"   >
+			<h1><cfoutput>Phone List</cfoutput></h1>
+		</div> <!-- /header -->
+		<script id="phonelistTpl" type="text/template" >
+			<ul data-role="listview" data-filter="true"  data-theme="b" data-dividertheme="b">
+				{{#DATA}}
+					<li><a href="tel:{{1}}" rel="external" >{{0}}</a></li>
+				{{/DATA}}
+			</ul>
+		</script>
+		<div data-role="content" id="phonelistContent" ></div> 
+		<div data-role="footer" data-position="fixed" align="center" >
+			<div data-role="controlgroup" data-type="horizontal" class="ui-bar" >
+				<a href="/mumbles/" data-transition="slideup" data-role="button" data-theme="b"  >Stream</a>
+				<a href="/mumbles/#viewProfile" data-transition="slideup"  data-role="button" data-theme="b" >Profile</a>		
+				<a href="/mumbles/#searchUsers" data-transition="slideup" data-role="button" data-theme="b" >Follow</a>
+				<a href="/mumbles/#loginUser" data-transition="pop"  data-role="button" data-theme="b" data-rel="dialog" >Bye</a>
+			</div>	
+		</div><!-- /footer -->	
+	</div> <!-- page -->
+		
+	<!-- Start of viewProfile -->
+	<div data-role="page" data-theme="b" id="viewProfile" >
+		<div data-role="header" data-position="fixed" >
+			<h1>Profile</h1>
+		</div> <!-- /header -->
+		<div data-role="content">
+			<cfoutput>
+				<h3>@#session.username#</h3>
+				<img src="#session.photo#" height="36" width="36">
+				<p class="ui-li-aside"  >#session.email#</p>
+			</cfoutput>
+			<script id="allFollowersTpl" type="text/template">
+				<h3>Following ({{DATA.length}})</h3>
+				<ul data-role="listview" data-inset="true" data-theme="b" >
+					{{#DATA}}
+						<li role="option" ><a href="#viewUser?user={{0}}" data-transition="slide" class="ui-link-inherit">{{0}}</a></li>
+					{{/DATA}}
+				</ul>
+			</script>
+			<div data-role="collapsible" data-collapsed="true" id="allFollowers" ></div>
+			<script id="allFollowedTpl" type="text/template">
+				<h3>Followed ({{DATA.length}})</h3>
+				<ul data-role="listview" data-inset="true" data-theme="b" >
+					{{#DATA}}
+						<li role="option" ><a href="#viewUser?user={{0}}" data-transition="slide" class="ui-link-inherit">{{0}}</a></li>
+					{{/DATA}}
+				</ul>
+			</script>
+			<div data-role="collapsible" data-collapsed="true" id="allFollowed"></div>
+		</div><!-- /content -->	
+		<div data-role="footer" data-position="fixed" align="center" >
+			<div data-role="controlgroup" data-type="horizontal" class="ui-bar" >
+				<a href="/mumbles/" data-transition="slideup" data-role="button" data-theme="b" >Stream</a>
+				<a href="/mumbles/#viewProfile" data-transition="slideup"  data-role="button" data-theme="b" >Profile</a>		
+				<a href="/mumbles/#searchUsers" data-transition="slideup" data-role="button" data-theme="b" >Follow</a>
+				<a href="/mumbles/#loginUser" data-transition="pop"  data-role="button" data-theme="b" data-rel="dialog" >Bye</a>
+			</div>	
+		</div><!-- /footer -->	
+	</div><!-- /page -->
+	
+	<!-- Page 2 of Profile -->
+	<div data-role="page" data-theme="b" id="viewProfile1" >
+		<div data-role="header" data-position="fixed" >
+			<h1>Profile</h1>
+		</div> <!-- /header -->
+		<div data-role="content">	
+			<div id="geo"><cfinclude template="includes/geo.cfm" /></div>
+		</div><!-- /content -->
+		<div data-role="footer" data-position="fixed" align="center" >
+			<div data-role="controlgroup" data-type="horizontal" class="ui-bar" >
+				<a href="/mumbles/" data-transition="slideup" data-role="button" data-theme="b" >Stream</a>
+				<a href="/mumbles/#viewProfile" data-transition="slideup"  data-role="button" data-theme="b" >Profile</a>		
+				<a href="/mumbles/#searchUsers" data-transition="slideup" data-role="button" data-theme="b" >Follow</a>
+				<a href="/mumbles/#loginUser" data-transition="pop"  data-role="button" data-theme="b" data-rel="dialog" >Bye</a>
+			</div>	
+		</div><!-- /footer -->	
+	</div><!-- /page -->
+		
+	<!-- page used to search of users to follow -->
+	<div data-role="page" data-theme="b" id="searchUsers" >
+		<div data-role="header" data-position="fixed" data-nobackbtn="true"  >
+			<h1>Mumblers</h1>
+		</div>
+		<script id="searchUsersTpl" type="text/template">
+			<ul data-role="listview" data-filter="true"  data-theme="b" data-dividertheme="b">
+				{{#DATA}}
+					<li>
+						<a href="#viewUser?user={{0}}" data-transition="slide" rel="external" class="ui-link-inherit">{{0}}</a>
+					</li>
+				{{/DATA}}
+			</ul>
+		</script>
+		<div data-role="content" class="ui-content" role="main" id="SearchUsersContent" ></div>
+		<div data-role="footer" data-position="fixed" align="center" >
+			<div data-role="controlgroup" data-type="horizontal" class="ui-bar" >
+				<a href="/mumbles/" data-transition="slideup" data-role="button" data-theme="b" >Stream</a>
+				<a href="/mumbles/#viewProfile" data-transition="slideup"  data-role="button" data-theme="b" >Profile</a>		
+				<a href="/mumbles/#searchUsers" data-transition="slideup" data-role="button" data-theme="b" >Follow</a>
+				<a href="/mumbles/#loginUser" data-transition="pop"  data-role="button" data-theme="b" data-rel="dialog" >Bye</a>
+			</div>	
+		</div><!-- /footer -->	
+	</div> <!-- page -->
+
+	<div data-role="page" data-theme="b" id="view" >
+		<div data-role="header" data-position="fixed" data-nobackbtn="true" id="viewHeader" >
+			<a href="#edit" data-transition="slidedown" data-role="button" data-icon="gear" data-theme="b" >Edit</a>
+			<h1>View Mumble</h1>
+			<a href="#reply" data-transition="slidedown" data-role="button" data-icon="gear" data-theme="b" >Reply</a>
+		</div> <!-- /header -->	
+		<script id="viewTpl" type="text/template" >
+			<div class="ui-grid-b">
+				<div class="ui-block-a"><img src="{{PHOTO}}" height="36" width="36" ></div>
+				<div class="ui-block-b"><h3 align="right" >@{{USERCREATED}}</h3></div>
+			</div>
+			<div><p style="white-space:pre-wrap;" >{{MUMBLE}}</p></div>
+		</script>
+		<div data-role="content" id="viewContent"></div> 
+		
+		<div data-role="footer" data-position="fixed" align="center" >
+			<div data-role="controlgroup" data-type="horizontal" class="ui-bar" >
+				<a href="/mumbles/" data-transition="slideup" data-role="button" data-theme="b" >Stream</a>
+				<a href="/mumbles/#viewProfile" data-transition="slideup"  data-role="button" data-theme="b" >Profile</a>		
+				<a href="/mumbles/#searchUsers" data-transition="slideup" data-role="button" data-theme="b" >Follow</a>
+				<a href="/mumbles/#loginUser" data-transition="pop"  data-role="button" data-theme="b" data-rel="dialog" >Bye</a>
+			</div>	
+		</div><!-- /footer -->	
+	</div> <!-- /page -->
+
+	<div data-role="page" data-theme="b" id="edit" >
+		<div data-role="header" data-position="fixed" data-nobackbtn="true"  >
+			<h1>Edit</h1>
+			<a href="#view" data-transition="slidedown" data-role="button" data-icon="gear" data-theme="b" >Cancel</a>
+		</div> <!-- /header -->
+		
+		<div data-role="content">
+
+			<form>			
+				<div data-role="fieldcontain">
+					<label for="editcategory" >Category</label>
+					<select id="editcategory" name="category">
+						<option value="GENERAL" >General</option>
+						<option value="RELEASE" >Release</option>
+						<option value="CHECKIN" >Check-in</option>
+					</select>
+				</div>
+				<div data-role="fieldcontain">
+					<textarea id="editmumble" name="txtmumble" cols="30" rows="22" ></textarea>
+				</div>
+				
+				<input id="editSubmit" type="submit" value="update" data-theme="b"  />
+			</form>		
+		</div> <!-- /content -->
+		
+		<div data-role="footer" data-position="fixed" align="center" >
+			<div data-role="controlgroup" data-type="horizontal" class="ui-bar" >
+				<a href="/mumbles/" data-transition="slideup" data-role="button" data-theme="b" >Stream</a>
+				<a href="/mumbles/#viewProfile" data-transition="slideup"  data-role="button" data-theme="b" >Profile</a>		
+				<a href="/mumbles/#searchUsers" data-transition="slideup" data-role="button" data-theme="b" >Follow</a>
+				<a href="/mumbles/#loginUser" data-transition="pop"  data-role="button" data-theme="b"data-rel="dialog" >Bye</a>
+			</div>	
+		</div><!-- /footer -->	
+	</div> <!-- page -->
+
+	<!-- Start of viewUser -->
+	<div data-role="page" data-theme="b" id="viewUser" >
+		<div data-role="header" data-position="fixed" >
+			<h1>User</h1>
+		</div>
+		<div data-role="content">	
+			<h4 id="hdrUser"></h4>
+			
+			<form>
+				
+				<div data-role="fieldcontain">
+					<fieldset data-role="controlgroup">
+						<legend>Categories :</legend>
+						
+						<input type="checkbox" id="GENERAL"  />
+						<label for="GENERAL" >General</label>
+						<input type="checkbox" id="RELEASE"  />
+						<label for="RELEASE" >Release</label>
+						<input type="checkbox" id="CHECKIN"  />
+						<label for="CHECKIN" >Check-in</label>
+					</fieldset>
+				</div>
+				
+				<button data-theme="b" type="submit" id="followSubmit" >Save</button>
+				<h4 id="notification"></h4>	
+			</form>
+
+		</div><!-- /content -->
+		<div data-role="footer" data-position="fixed" align="center" >
+			<div data-role="controlgroup" data-type="horizontal" class="ui-bar" >
+				<a href="/mumbles/" data-transition="slideup" data-role="button" data-theme="b" >Stream</a>
+				<a href="/mumbles/#viewProfile" data-transition="slideup"  data-role="button" data-theme="b" >Profile</a>		
+				<a href="/mumbles/#searchUsers" data-transition="slideup" data-role="button" data-theme="b" >Follow</a>
+				<a href="/mumbles/#loginUser.html" data-transition="pop"  data-role="button" data-theme="b" data-rel="dialog" >Bye</a>
+			</div>	
+		</div><!-- /footer -->	
+	</div><!-- /page -->
+
+	<div data-role="page" data-theme="b" id="reply" >
+		<div data-role="header" data-position="fixed" data-nobackbtn="true"  >
+			<h1>Reply</h1>
+			<a href="#view" data-transition="slidedown" data-role="button" data-icon="gear" data-theme="b" >Cancel</a>
+		</div> <!-- /header -->
+		
+		<div data-role="content">
+			<form>
+				<div data-role="fieldcontain">
+					<textarea id="replymumble" name="txtmumble" cols="30" rows="22" ></textarea>
+				</div>
+				
+				<button id="replySubmit" type="submit" data-theme="b"  >Reply</button>
+			</form>	
+		</div> <!-- /content -->
+		<div data-role="footer" data-position="fixed" align="center" >
+			<div data-role="controlgroup" data-type="horizontal" class="ui-bar" >
+				<a href="/mumbles/" data-transition="slideup" data-role="button" data-theme="b" >Stream</a>
+				<a href="/mumbles/#viewProfile" data-transition="slideup"  data-role="button" data-theme="b" >Profile</a>		
+				<a href="/mumbles/#searchUsers" data-transition="slideup" data-role="button" data-theme="b" >Follow</a>
+				<a href="/mumbles/#liginUser" data-transition="pop"  data-role="button" data-theme="b"  data-rel="dialog" >Bye</a>
+			</div>	
+		</div><!-- /footer -->	
+	</div> <!-- page -->
+	<div data-role="page" data-theme="b" id="loginUser" >
+		<div data-role="header" data-position="fixed" data-nobackbtn="true" >
+				<h1><cfoutput>Login</cfoutput></h1>
+			</div> <!-- /header -->
+			<div data-role="content" >
+				<fieldset>
+					<form>
+						<div data-role="fieldcontain">
+							<label for="username"  >Username:</label>
+							<input id="username" type="text"  value="" />
+						</div>
+						<div data-role="fieldcontain">
+						
+							<label for="password" >Password:</label> 
+							<input id="password" type="password" value="" />
+						</div> 
+						<input type="submit" value="Enter" id="submitLogin" data-theme="b"  >
+					</form>
+				</fieldset>
+			</div> <!-- /content -->
+		</div> <!-- /page -->
+	</body>
+</html>
