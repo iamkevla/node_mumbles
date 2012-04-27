@@ -36,14 +36,14 @@ function loggedIn(req, res, next) {
 
   	req.session.username!=null
   		? next()
-  		: res.redirect('/mumbles/loginUser.html');
+  		: res.redirect('/node_mumbles/loginUser.html');
 }
 
 // Routes
 app.get('/', loggedIn, routes.index );
 
 
-app.get('/mumbles/', loggedIn, function(req, res, next){
+app.get('/node_mumbles/', loggedIn, function(req, res, next){
     next();
 });
 
