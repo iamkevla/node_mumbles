@@ -1,0 +1,13 @@
+node_mumbles
+Kevin Vlahos
+2012-04-28
+
+Public Domain
+
+node_mumbles is a webapp built to investigate current javascript technologies. 
+
+node_mumbles utilises nodejs including the express modules, jQuery Mobile and mustache for client side templating.
+Its basically an webapp similar to Twitter where you enter mumbles (instead of tweets) and subscribe to mumbles.
+
+
+The source is available at https://github.com/iamkevla/node_mumbles.
